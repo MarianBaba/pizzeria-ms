@@ -9,20 +9,20 @@ import org.pmd.pizzeria_ms.model.Transaction;
 
 public class SessionFactoryManager {
 	
-	private static SessionFactory factory = new Configuration().configure()
+	private static SessionFactory factory;
+	
+	@SuppressWarnings("exports")
+	public static SessionFactory getSessionFactory() {
+		if (factory == null) {
+			factory = new Configuration().configure()
 					.addAnnotatedClass(Product.class)
 					.addAnnotatedClass(Transaction.class)
 					.addAnnotatedClass(Order.class)
 					.addAnnotatedClass(Pizza.class)
 					.buildSessionFactory();
-	
-	@SuppressWarnings("exports")
-	public static SessionFactory getSessionFactory() {
+		}
 		return factory;
 	}
 	
-	private SessionFactoryManager() {
-		
-	}
-
+	private SessionFactoryManager() {}
 }

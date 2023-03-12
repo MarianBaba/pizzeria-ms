@@ -1,10 +1,6 @@
 package org.pmd.pizzeria_ms.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +12,7 @@ import org.pmd.pizzeria_ms.dao.PizzaDAO;
 import org.pmd.pizzeria_ms.dao.ProductDAO;
 import org.pmd.pizzeria_ms.model.Pizza;
 import org.pmd.pizzeria_ms.model.Product;
+import org.pmd.pizzeria_ms.utility.CSVManager;
 import org.pmd.pizzeria_ms.view.Pizzeria;
 
 import javafx.application.Platform;
@@ -217,23 +214,7 @@ public class MenuController implements Initializable {
 	
 	@FXML
 	public void exportCSV() throws IOException {
-		Writer writer = null;
-		try {
-			File file = new File("C:\\Users\\maria\\Desktop\\menu.csv");
-			writer = new BufferedWriter(new FileWriter(file));
-			
-			List<Pizza> pizzas = pizzaDAO.getAll();
-			for (Pizza p : pizzas) {
-				String row = p.getId() + "," + p.getName() + "," + p.getPrice() + "," + p.getDescription() + "\n";
-				writer.write(row);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			writer.flush();
-			writer.close();
-		}
+		CSVManager.exportCSV("pizzas");
 	}
 	
 	@FXML

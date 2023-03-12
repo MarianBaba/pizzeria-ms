@@ -43,5 +43,10 @@
       <Button layoutX="759.0" layoutY="613.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" />
       <TextField fx:id="updateIdTextField" layoutX="585.0" layoutY="484.0" prefHeight="25.0" prefWidth="465.0" text="id" />
       <Button layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" text="esporta CSV" />
+      <Label layoutX="529.0" layoutY="40.0" text="MENU">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

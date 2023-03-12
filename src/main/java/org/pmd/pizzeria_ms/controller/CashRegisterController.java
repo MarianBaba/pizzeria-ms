@@ -1,10 +1,6 @@
 package org.pmd.pizzeria_ms.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -14,6 +10,7 @@ import java.util.ResourceBundle;
 
 import org.pmd.pizzeria_ms.dao.TransactionDAO;
 import org.pmd.pizzeria_ms.model.Transaction;
+import org.pmd.pizzeria_ms.utility.CSVManager;
 import org.pmd.pizzeria_ms.enumeration.Type;
 import org.pmd.pizzeria_ms.view.Pizzeria;
 
@@ -104,15 +101,13 @@ public class CashRegisterController implements Initializable {
         deleteButtonColumn.setCellFactory(deleteButtonCellFactory);
         
         final Callback<TableColumn<Transaction,String>, TableCell<Transaction, String>> WRAPPING_CELL_FACTORY = 
-                new Callback<TableColumn<Transaction,String>, TableCell<Transaction, String>>() {
+            new Callback<TableColumn<Transaction,String>, TableCell<Transaction, String>>() {
                     
             @Override public TableCell<Transaction,String> call(TableColumn<Transaction,String> param) {
                 TableCell<Transaction, String> tableCell = new TableCell<Transaction,String>() {
                     @Override protected void updateItem(String item, boolean empty) {
                         if (item == getItem()) return;
-
                         super.updateItem(item, empty);
-
                         if (item == null) {
                             super.setText(null);
                             super.setGraphic(null);
@@ -133,8 +128,6 @@ public class CashRegisterController implements Initializable {
             }
         };
         descriptionColumn.setCellFactory(WRAPPING_CELL_FACTORY);
-        
-        
         List<Transaction> transactions = transactionDAO.getAll();
         ObservableList<Transaction> transactionsList = FXCollections.observableArrayList(transactions);
         transactionsTable.getColumns().add(deleteButtonColumn);
@@ -206,25 +199,8 @@ public class CashRegisterController implements Initializable {
 	
 	@FXML
 	public void exportCSV() throws IOException {
-		Writer writer = null;
-		try {
-			File file = new File("C:\\Users\\maria\\Desktop\\cash-register.csv");
-			writer = new BufferedWriter(new FileWriter(file));
-			
-			List<Transaction> transactions = transactionDAO.getAll();
-			for (Transaction t : transactions) {
-				String row = t.getId() + "," + t.getType() + "," + t.getAmount() + "," + t.getDescription() + "," + t.getDate() + "\n";
-				writer.write(row);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			writer.flush();
-			writer.close();
-		}
+		CSVManager.exportCSV("transactions");
 	}
-	
 	
 	@FXML
 	public void switchToPizzeria() throws IOException {

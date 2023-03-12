@@ -44,5 +44,10 @@
       <Button layoutX="755.0" layoutY="680.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" />
       <Label layoutX="707.0" layoutY="446.0" text="compila solo i campi che vuoi modificare" />
       <Button layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" text="esporta CSV" />
+      <Label layoutX="489.0" layoutY="40.0" text="MAGAZZINO">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

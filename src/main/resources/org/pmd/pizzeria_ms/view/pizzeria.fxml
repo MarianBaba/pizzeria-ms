@@ -2,35 +2,49 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pmd.pizzeria_ms.controller.PizzeriaController">
    <children>
-      <GridPane layoutX="100.0" layoutY="188.0" prefHeight="436.0" prefWidth="900.0">
+      <Label layoutX="478.0" layoutY="70.0" text="PIZZERIA" textAlignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="100.0" layoutY="200.0" prefHeight="400.0" prefWidth="900.0" style="-fx-vgap: 100; -fx-hgap: 100;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#switchToWarehouse" prefHeight="229.0" prefWidth="450.0" text="prodotti" />
-            <Button mnemonicParsing="false" onAction="#switchToLogistics" prefHeight="229.0" prefWidth="450.0" text="logistica" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#switchToCashRegister" prefHeight="244.0" prefWidth="450.0" text="cassa" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#switchToMenu" prefHeight="262.0" prefWidth="548.0" text="menù" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToCashRegister" prefHeight="163.0" prefWidth="416.0" style="-fx-border-radius: 12px; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0);" text="Cassa" textAlignment="CENTER" GridPane.columnIndex="1">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToWarehouse" prefHeight="169.0" prefWidth="423.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0); -fx-border-radius: 12px; -fx-background-radius: 12px;" text="Prodotti" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="17.0" />
+               </font></Button>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToLogistics" prefHeight="180.0" prefWidth="430.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0); -fx-border-radius: 12px; -fx-background-radius: 12px;" text="Logistica" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="17.0" />
+               </font></Button>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToMenu" prefHeight="182.0" prefWidth="446.0" style="-fx-border-radius: 12px; -fx-background-radius: 12px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0);" text="Menù" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="17.0" />
+               </font></Button>
          </children>
       </GridPane>
-      <Label layoutX="482.0" layoutY="96.0" text="PIZZERIA" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Label>
+      <Separator layoutX="100.0" layoutY="150.0" prefHeight="10.0" prefWidth="900.0" />
    </children>
 </AnchorPane>

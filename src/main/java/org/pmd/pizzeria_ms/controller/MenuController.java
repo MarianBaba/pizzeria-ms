@@ -40,46 +40,44 @@ public class MenuController implements Initializable {
 	private TableView<Pizza> pizzasTable;
 	
 	@FXML
-	private TableColumn<Pizza, Integer> idColumn;
+	private TableColumn<Pizza, Integer> id;
 	
 	@FXML
-	private TableColumn<Pizza, String> nameColumn;
+	private TableColumn<Pizza, String> name;
 	
 	@FXML
-	private TableColumn<Pizza, Double> priceColumn;
+	private TableColumn<Pizza, Double> price;
 
 	@FXML
-	private TableColumn<Pizza, String> descriptionColumn;
+	private TableColumn<Pizza, String> description;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-		descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
+		name.setCellValueFactory(new PropertyValueFactory<>("name"));
+		price.setCellValueFactory(new PropertyValueFactory<>("price"));
+		description.setCellValueFactory(new PropertyValueFactory<>("description"));
 		
-		TableColumn<Pizza, Void> deleteButtonColumn = new TableColumn<>("");
-		Callback<TableColumn<Pizza, Void>, TableCell<Pizza, Void>> deleteButtonCellFactory = new Callback<TableColumn<Pizza, Void>, TableCell<Pizza, Void>>() {
-            @Override
-            public TableCell<Pizza, Void> call(final TableColumn<Pizza, Void> param) {
-                final TableCell<Pizza, Void> cell = new TableCell<Pizza, Void>() {
-
-                    private final Button btn = new Button("Elimina");
-
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
+		TableColumn<Pizza, Void> deleteButtonColumn = new TableColumn<>("azioni");
+		Callback<TableColumn<Pizza, Void>, TableCell<Pizza, Void>> deleteButtonCellFactory = 
+				new Callback<TableColumn<Pizza, Void>, TableCell<Pizza, Void>>() {
+            		@Override
+            		public TableCell<Pizza, Void> call(final TableColumn<Pizza, Void> param) {
+            			final TableCell<Pizza, Void> cell = new TableCell<Pizza, Void>() {
+            				private final Button btn = new Button("Elimina");
+            				{
+            					btn.setOnAction((ActionEvent event) -> {
                         	
-                        	Integer pizzaToDelete = getTableView().getItems().get(getIndex()).getId();
-                        	pizzaDAO.delete(pizzaToDelete);
-                        	
-                        	try {
-								Pizzeria.setRoot("menu");
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-                        });
-                    }
-
+            						Integer pizzaToDelete = getTableView().getItems().get(getIndex()).getId();
+            						pizzaDAO.delete(pizzaToDelete);
+            						
+            						try {
+            							Pizzeria.setRoot("menu");
+            						} catch (IOException e) {
+            							e.printStackTrace();
+            						}
+            					});
+            				}
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -98,33 +96,33 @@ public class MenuController implements Initializable {
         final Callback<TableColumn<Pizza,String>, TableCell<Pizza, String>> WRAPPING_CELL_FACTORY = 
                 new Callback<TableColumn<Pizza,String>, TableCell<Pizza, String>>() {
                     
-            @Override public TableCell<Pizza,String> call(TableColumn<Pizza,String> param) {
-                TableCell<Pizza, String> tableCell = new TableCell<Pizza,String>() {
-                    @Override protected void updateItem(String item, boolean empty) {
-                        if (item == getItem()) return;
+            	@Override public TableCell<Pizza,String> call(TableColumn<Pizza,String> param) {
+            		TableCell<Pizza, String> tableCell = new TableCell<Pizza,String>() {
+            			@Override protected void updateItem(String item, boolean empty) {
+            				if (item == getItem()) return;
+            				super.updateItem(item, empty);
 
-                        super.updateItem(item, empty);
-
-                        if (item == null) {
-                            super.setText(null);
-                            super.setGraphic(null);
-                        } else {
-                            super.setText(null);
-                            Label l = new Label(item);
-                            l.setWrapText(true);
-                            VBox box = new VBox(l);
-                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
-                            	box.setPrefHeight(newValue.doubleValue()+1);
-                            	Platform.runLater(()->this.getTableRow().requestLayout());
-                            });
-                            super.setGraphic(box);
-                        }
-                    }
-                };
-    	    return tableCell;
-            }
-        };
-        descriptionColumn.setCellFactory(WRAPPING_CELL_FACTORY);
+	                        if (item == null) {
+	                            super.setText(null);
+	                            super.setGraphic(null);
+	                        } else {
+	                            super.setText(null);
+	                            Label l = new Label(item);
+	                            l.setWrapText(true);
+	                            VBox box = new VBox(l);
+	                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
+	                            	box.setPrefHeight(newValue.doubleValue()+1);
+	                            	Platform.runLater(()->this.getTableRow().requestLayout());
+	                            });
+	                            super.setGraphic(box);
+	                        }
+	                    }
+            		};
+            		return tableCell;
+            	}
+        	};
+        	
+        description.setCellFactory(WRAPPING_CELL_FACTORY);
         List<Pizza> pizzas = pizzaDAO.getAll();
         ObservableList<Pizza> pizzasList = FXCollections.observableArrayList(pizzas);
         pizzasTable.getColumns().add(deleteButtonColumn);
@@ -133,63 +131,60 @@ public class MenuController implements Initializable {
         pizzasTable.setMinHeight(Region.USE_PREF_SIZE);
 	}
 	
-	// aggiungi pizza
+	// insert fields + save function
 	@FXML
-	private TextField insertNameTextField;
+	private TextField insertName;
 	
 	@FXML
-	private TextField insertIngredientsTextField;
+	private TextField insertIngredients;
 	
 	@FXML
 	public void save() throws IOException {
-		String name = insertNameTextField.getText();
 		List<Integer> ingredientsId = new ArrayList<>();
-		String[] ingredients = insertIngredientsTextField.getText().strip().split(",");
+		String[] ingredients = insertIngredients.getText().strip().split(",");
 		for (String id : ingredients) {
 			ingredientsId.add(Integer.valueOf(id));
 		}
 		StringBuilder description = new StringBuilder();
 		List<Double> prices = new ArrayList<>();
+		ProductDAO productDAO = new ProductDAO();
 		description.append("[");
 		
-		ProductDAO productDAO = new ProductDAO();
-		
-		for (Integer id : ingredientsId) {
-			Product prod = productDAO.get(id).get();
+		for (Integer ingredientId : ingredientsId) {
+			Product prod = productDAO.get(ingredientId).get();
 			description.append(prod.getName() + ",");
 			prices.add(prod.getPrice());
 		}
 		
 		description.deleteCharAt(description.length() - 1);
 		description.append("]");
-		System.out.println(description);
 		
-		String price = Pizza.getPriceByProducts(prices).toString();
-		
-		pizzaDAO.save(name, price, description.toString());
+		pizzaDAO.save(insertName.getText(), Pizza.getPriceByProducts(prices).toString(), description.toString());
 		Pizzeria.setRoot("menu");
 	}
 	
-	@FXML
-	private TextField updateIdTextField;
+	// update fields + update function
 	
 	@FXML
-	private TextField updateNameTextField;
+	private TextField updateId;
 	
 	@FXML
-	private TextField updateIngredientsTextField;
+	private TextField updateName;
+	
+	@FXML
+	private TextField updateIngredients;
 	
 	@FXML
 	private void update() throws IOException {
 		Map<String, String> updatedPizza= new HashMap<>();
-		if (updateNameTextField.getText() != null && !updateNameTextField.getText().equals("")) {
-			updatedPizza.put("name", updateNameTextField.getText());
+		if (updateName.getText() != null && !updateName.getText().equals("")) {
+			updatedPizza.put("name", updateName.getText());
 		}
-		if (updateIngredientsTextField.getText() != null && !updateIngredientsTextField.getText().equals("")) {
+		if (updateIngredients.getText() != null && !updateIngredients.getText().equals("")) {
 			List<Integer> ingredientsId = new ArrayList<>();
-			String[] ingredients = updateIngredientsTextField.getText().strip().split(",");
-			for (String id : ingredients) {
-				ingredientsId.add(Integer.valueOf(id));
+			String[] ingredients = updateIngredients.getText().strip().split(",");
+			for (String ingredientId : ingredients) {
+				ingredientsId.add(Integer.valueOf(ingredientId));
 			}
 			StringBuilder description = new StringBuilder();
 			List<Double> prices = new ArrayList<>();
@@ -203,12 +198,11 @@ public class MenuController implements Initializable {
 			
 			description.deleteCharAt(description.length() - 1);
 			description.append("]");
-			String price = Pizza.getPriceByProducts(prices).toString();
 			
 			updatedPizza.put("description", description.toString());
-			updatedPizza.put("price", price);
+			updatedPizza.put("price", Pizza.getPriceByProducts(prices).toString());
 		}
-		pizzaDAO.update(Integer.valueOf(updateIdTextField.getText()), updatedPizza);
+		pizzaDAO.update(Integer.valueOf(updateId.getText()), updatedPizza);
 		Pizzeria.setRoot("menu");
 	}
 	

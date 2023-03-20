@@ -9,6 +9,8 @@ import org.pmd.pizzeria_ms.model.Transaction;
 
 public class SessionFactoryManager {
 	
+	// singleton pattern implemented
+	
 	private static SessionFactory factory;
 	
 	@SuppressWarnings("exports")

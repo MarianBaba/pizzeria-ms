@@ -41,100 +41,95 @@ public class LogisticsController implements Initializable {
 	private TableView<Order> ordersTable;
 	
 	@FXML
-	private TableColumn<Order, Integer> idColumn;
+	private TableColumn<Order, Integer> id;
 	
 	@FXML
-	private TableColumn<Order, String> descriptionColumn;
+	private TableColumn<Order, String> description;
 	
 	@FXML
-	private TableColumn<Pizza, Double> priceColumn;
+	private TableColumn<Pizza, Double> price;
 
 	@FXML
-	private TableColumn<Pizza, LocalDate> dateColumn;
+	private TableColumn<Pizza, LocalDate> date;
 
 	@FXML
-	private TableColumn<Pizza, String> supplierColumn;
+	private TableColumn<Pizza, String> supplier;
 	
 	// inizializzazine della tabella
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-		priceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-		supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
+		description.setCellValueFactory(new PropertyValueFactory<>("description"));
+		price.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+		date.setCellValueFactory(new PropertyValueFactory<>("date"));
+		supplier.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 		
-		TableColumn<Order, Void> deleteButtonColumn = new TableColumn<>("");
-		Callback<TableColumn<Order, Void>, TableCell<Order, Void>> deleteButtonCellFactory = new Callback<TableColumn<Order, Void>, TableCell<Order, Void>>() {
-            @Override
-            public TableCell<Order, Void> call(final TableColumn<Order, Void> param) {
-                final TableCell<Order, Void> cell = new TableCell<Order, Void>() {
-
-                    private final Button btn = new Button("Elimina");
-
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                        	
-                        	Integer orderToDelete = getTableView().getItems().get(getIndex()).getId();
-                        	orderDAO.delete(orderToDelete);
-                        	
-                        	try {
-								Pizzeria.setRoot("logistics");
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
+		TableColumn<Order, Void> deleteButtonColumn = new TableColumn<>("azioni");
+		Callback<TableColumn<Order, Void>, TableCell<Order, Void>> deleteButtonCellFactory = 
+				new Callback<TableColumn<Order, Void>, TableCell<Order, Void>>() {
+            		@Override
+            		public TableCell<Order, Void> call(final TableColumn<Order, Void> param) {
+            			final TableCell<Order, Void> cell = new TableCell<Order, Void>() {
+            				private final Button btn = new Button("Elimina");
+            				
+            				{
+            					btn.setOnAction((ActionEvent event) -> {
+            						Integer orderToDelete = getTableView().getItems().get(getIndex()).getId();
+            						orderDAO.delete(orderToDelete);
+            						try {
+            							Pizzeria.setRoot("logistics");
+            						} catch (IOException e) {
+            							e.printStackTrace();
+            						}
+            					});
+            				}
+            				@Override
+            				public void updateItem(Void item, boolean empty) {
+            					super.updateItem(item, empty);
+            					if (empty) {
+            						setGraphic(null);
+            					} else {
+            						setGraphic(btn);
+            					}
+            				}
+            			};
+            		return cell;
+            		}
+        		};
         
         deleteButtonColumn.setCellFactory(deleteButtonCellFactory);
         
-        
-        // TUTTO QUESTO SERVE PER FARE IN MODO CHE IL TESTO VADA A CAPO IN UNA CELLA DELLA TABELLA INVECE CHE DIVENTARE INVISIBILE
         final Callback<TableColumn<Order,String>, TableCell<Order,String>> WRAPPING_CELL_FACTORY = 
                 new Callback<TableColumn<Order,String>, TableCell<Order,String>>() {
                     
-            @Override public TableCell<Order,String> call(TableColumn<Order,String> param) {
-                TableCell<Order,String> tableCell = new TableCell<Order,String>() {
-                    @Override protected void updateItem(String item, boolean empty) {
-                        if (item == getItem()) return;
+            		@Override public TableCell<Order,String> call(TableColumn<Order,String> param) {
+            		TableCell<Order,String> tableCell = new TableCell<Order,String>() {
+            			@Override 
+            			protected void updateItem(String item, boolean empty) {
+            				if (item == getItem()) return;
+            				super.updateItem(item, empty);
 
-                        super.updateItem(item, empty);
-
-                        if (item == null) {
-                            super.setText(null);
-                            super.setGraphic(null);
-                        } else {
-                            super.setText(null);
-                            Label l = new Label(item);
-                            l.setWrapText(true);
-                            VBox box = new VBox(l);
-                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
-                            	box.setPrefHeight(newValue.doubleValue()+1);
-                            	Platform.runLater(()->this.getTableRow().requestLayout());
-                            });
-                            super.setGraphic(box);
-                        }
-                    }
-                };
-    	    return tableCell;
-            }
-        };
-        descriptionColumn.setCellFactory(WRAPPING_CELL_FACTORY);
-        
+            				if (item == null) {
+            					super.setText(null);
+            					super.setGraphic(null);
+            				} else {
+            					super.setText(null);
+            					Label l = new Label(item);
+            					l.setWrapText(true);
+	                            VBox box = new VBox(l);
+	                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
+	                            	box.setPrefHeight(newValue.doubleValue()+1);
+	                            	Platform.runLater(()->this.getTableRow().requestLayout());
+	                            });
+	                            super.setGraphic(box);
+            				}
+            			}
+            		};
+            		return tableCell;
+            	}
+        	};
+        	
+        description.setCellFactory(WRAPPING_CELL_FACTORY);
         List<Order> orders = orderDAO.getAll();
         ObservableList<Order> ordersList = FXCollections.observableArrayList(orders);
         
@@ -144,68 +139,60 @@ public class LogisticsController implements Initializable {
         ordersTable.setMinHeight(Region.USE_PREF_SIZE);
 	}
 	
-	// inserimento di un ordine
-	@FXML
-	private TextField insertDescriptionTextField;
+	// insert fields + save function
 	
 	@FXML
-	private TextField insertTotalPriceTextField;
+	private TextField insertDescription;
 	
 	@FXML
-	private TextField insertDateTextField;
+	private TextField insertTotalPrice;
 	
 	@FXML
-	private TextField insertSupplierTextField;
+	private TextField insertDate;
+	
+	@FXML
+	private TextField insertSupplier;
 	
 	@FXML
 	public void save() throws IOException {
-		String description = insertDescriptionTextField.getText();
-		String totalPrice = insertTotalPriceTextField.getText();
-		String date = insertDateTextField.getText();
-		String supplier = insertSupplierTextField.getText();
-		Integer id = orderDAO.save(description, totalPrice, date, supplier);
-		
-		String type = "EXPENSE";
-		String amount = totalPrice;
-		String transactionDescription = "Nuovo ordine: " + id;
-		String transactionDate = LocalDate.now().toString();
-		transactionDAO.save(type, amount, transactionDescription, transactionDate);
-		
+		Integer newOrderId = orderDAO.save(insertDescription.getText(), insertTotalPrice.getText(), insertDate.getText(), insertSupplier.getText());
+		transactionDAO.save("EXPENSE", insertTotalPrice.getText(), "Nuovo ordine: " + newOrderId, LocalDate.now().toString());
 		Pizzeria.setRoot("logistics");
 	}
 	
-	// update di un ordine
-	@FXML
-	private TextField updateIdTextField;
+	// update fields + update function
 	
 	@FXML
-	private TextField updateDescriptionTextField;
+	private TextField updateId;
 	
 	@FXML
-	private TextField updateTotalPriceTextField;
+	private TextField updateDescription;
 	
 	@FXML
-	private TextField updateDateTextField;
+	private TextField updateTotalPrice;
 	
 	@FXML
-	private TextField updateSupplierTextField;
+	private TextField updateDate;
+	
+	@FXML
+	private TextField updateSupplier;
 	
 	@FXML
 	private void update() throws IOException {
 		Map<String, String> updatedOrder = new HashMap<>();
-		if (updateDescriptionTextField.getText() != null && !updateDescriptionTextField.getText().equals("")) {
-			updatedOrder.put("description", updateDescriptionTextField.getText());
+		if (updateDescription.getText() != null && !updateDescription.getText().equals("")) {
+			updatedOrder.put("description", updateDescription.getText());
 		}
-		if (updateTotalPriceTextField.getText() != null && !updateTotalPriceTextField.getText().equals("")) {
-			updatedOrder.put("totalPrice", updateTotalPriceTextField.getText());
+		if (updateTotalPrice.getText() != null && !updateTotalPrice.getText().equals("")) {
+			updatedOrder.put("totalPrice", updateTotalPrice.getText());
 		}
-		if (updateDateTextField.getText() != null && !updateDateTextField.getText().equals("")) {
-			updatedOrder.put("date", updateDateTextField.getText());
+		if (updateDate.getText() != null && !updateDate.getText().equals("")) {
+			updatedOrder.put("date", updateDate.getText());
 		}
-		if (updateSupplierTextField.getText() != null && !updateSupplierTextField.getText().equals("")) {
-			updatedOrder.put("supplier", updateSupplierTextField.getText());
+		if (updateSupplier.getText() != null && !updateSupplier.getText().equals("")) {
+			updatedOrder.put("supplier", updateSupplier.getText());
 		}
-		orderDAO.update(Integer.valueOf(updateIdTextField.getText()), updatedOrder);
+		orderDAO.update(Integer.valueOf(updateId.getText()), updatedOrder);
 		Pizzeria.setRoot("logistics");
 	}
 	

@@ -14,16 +14,16 @@ public class PizzaDAO implements DAO<Pizza> {
 	@Override
 	public List<Pizza> getAll() {
 		Session session = factory.openSession();
-		Transaction tx = null;
+		Transaction transaction = null;
 		List<Pizza> pizzas = null;
 		
 		try {
-			tx = session.beginTransaction();
+			transaction = session.beginTransaction();
 			pizzas = session.createQuery("FROM Pizza").list();
-			tx.commit();
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (transaction != null) {
+				transaction.rollback();
 			}
 			e.printStackTrace();
 		} finally {
@@ -40,24 +40,20 @@ public class PizzaDAO implements DAO<Pizza> {
 	
 	@Override
 	public Integer save(String... params) {
-		String name = params[0];
-		Double price = Double.valueOf(params[1]);
-		String description = params[2];
-		
 		Session session = factory.openSession();
-		Transaction tx = null;
+		Transaction transaction = null;
 		Integer id = null;
 		
 		try {
-			tx = session.beginTransaction();
+			transaction = session.beginTransaction();
 			Pizza pizza = new Pizza();
-			pizza.setName(name);
-			pizza.setPrice(price);
-			pizza.setDescription(description);
+			pizza.setName(params[0]);
+			pizza.setPrice(Double.valueOf(params[1]));
+			pizza.setDescription(params[2]);
 			id = (Integer) session.save(pizza);
-			tx.commit();
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
+			if (transaction!=null) transaction.rollback();
 	        e.printStackTrace();
 		} finally {
 			session.close();
@@ -69,7 +65,7 @@ public class PizzaDAO implements DAO<Pizza> {
 	@Override
 	public void update(Integer id, Map<String, String> params) {
 		Session session = factory.openSession();
-	    Transaction tx = null;
+	    Transaction transaction = null;
 	    
 	    try {
 	    	Pizza pizza = get(id).get();
@@ -79,28 +75,27 @@ public class PizzaDAO implements DAO<Pizza> {
 	    	if (params.containsKey("description")) {
 	    		pizza.setDescription(params.get("description"));
 	    	}
-	    	tx = session.beginTransaction();
+	    	transaction = session.beginTransaction();
 	    	session.update(pizza);
-	    	tx.commit();
+	    	transaction.commit();
 	    } catch (HibernateException e) {
 	    	e.printStackTrace();
 	    } finally {
 	    	session.close();
 	    }
-	    
 	}
 	
 	@Override
 	public void delete(Integer id) {
 		Session session = factory.openSession();
-	    Transaction tx = null;
+	    Transaction transaction = null;
 	    try {
-	         tx = session.beginTransaction(); 
+	         transaction = session.beginTransaction(); 
 	         Pizza pizza = get(id).get();
 	         session.delete(pizza); 
-	         tx.commit();
+	         transaction.commit();
 	      } catch (HibernateException e) {
-	         if (tx!=null) tx.rollback();
+	         if (transaction!=null) transaction.rollback();
 	         e.printStackTrace(); 
 	      } finally {
 	         session.close(); 

@@ -11,44 +11,48 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pmd.pizzeria_ms.controller.CashRegisterController">
    <children>
-      <Button layoutX="50.0" layoutY="40.0" mnemonicParsing="false" onAction="#switchToPizzeria" prefHeight="30.0" prefWidth="100.0" text="indietro" />
+      <Button alignment="CENTER" layoutX="50.0" layoutY="40.0" mnemonicParsing="false" onAction="#switchToPizzeria" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 5px; -fx-background-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);" text="indietro" textAlignment="CENTER">
+      	<font>
+      		<Font name="Colfax" />
+      	</font>
+      </Button>
       <TableView fx:id="transactionsTable" layoutX="50.0" layoutY="120.0" prefHeight="250.0" prefWidth="1000.0">
         <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
          <columns>
-            <TableColumn fx:id="idColumn" prefWidth="75.0" text="id" />
-            <TableColumn fx:id="typeColumn" prefWidth="75.0" text="tipologia" />
-            <TableColumn fx:id="amountColumn" prefWidth="75.0" text="ammontare" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="descrizione" />
-            <TableColumn fx:id="dateColumn" prefWidth="75.0" text="data" />
+            <TableColumn fx:id="id" prefWidth="75.0" text="id" />
+            <TableColumn fx:id="type" prefWidth="75.0" text="tipologia" />
+            <TableColumn fx:id="amount" prefWidth="75.0" text="ammontare" />
+            <TableColumn fx:id="description" prefWidth="75.0" text="descrizione" />
+            <TableColumn fx:id="date" prefWidth="75.0" text="data" />
          </columns></TableView>
       <Separator layoutX="50.0" layoutY="400.0" prefHeight="0.0" prefWidth="1000.0" />
       <Separator layoutX="547.0" layoutY="446.0" orientation="VERTICAL" prefHeight="276.0" prefWidth="0.0" />
-      <Label layoutX="196.0" layoutY="435.0" text="INSERISCI TRANSAZIONE">
+      <Label alignment="CENTER" layoutX="196.0" layoutY="435.0" text="INSERISCI TRANSAZIONE" textAlignment="CENTER">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="734.0" layoutY="436.0" text="MODIFICA TRANSAZIONE">
+      <Label alignment="CENTER" layoutX="734.0" layoutY="436.0" text="MODIFICA TRANSAZIONE" textAlignment="CENTER">
          <font>
-            <Font size="15.0" />
+            <Font name="Colfax" size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="insertTypeTextField" layoutX="50.0" layoutY="523.0" prefHeight="25.0" prefWidth="460.0" text="tipologia (&quot;EXPENSE&quot;, &quot;INCOME&quot;)" />
-      <TextField fx:id="insertAmountTextField" layoutX="50.0" layoutY="559.0" prefHeight="25.0" prefWidth="460.0" text="ammontare" />
-      <TextField fx:id="insertDescriptionTextField" layoutX="50.0" layoutY="601.0" prefHeight="25.0" prefWidth="460.0" text="descrizione" />
-      <TextField fx:id="insertDateTextField" layoutX="50.0" layoutY="647.0" prefHeight="25.0" prefWidth="460.0" text="data (yyyy-mm-dd)" />
-      <TextField fx:id="updateTypeTextField" layoutX="590.0" layoutY="523.0" prefHeight="25.0" prefWidth="460.0" text="tipologia" />
-      <TextField fx:id="updateAmountTextField" layoutX="590.0" layoutY="559.0" prefHeight="25.0" prefWidth="460.0" text="ammontare" />
-      <TextField fx:id="updateDescriptionTextField" layoutX="590.0" layoutY="601.0" prefHeight="25.0" prefWidth="460.0" text="descrizione" />
-      <TextField fx:id="updateDateTextField" layoutX="590.0" layoutY="647.0" prefHeight="25.0" prefWidth="460.0" text="data (yyyy-mm-dd)" />
-      <TextField fx:id="updateIdTextField" layoutX="590.0" layoutY="480.0" prefHeight="25.0" prefWidth="460.0" text="id" />
-      <Button layoutX="220.0" layoutY="691.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="120.0" text="inserisci" />
-      <Button layoutX="760.0" layoutY="691.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" />
-      <Label layoutX="712.0" layoutY="456.0" text="compila solo i campi che vuoi modificare" />
-      <Button layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" text="esporta CSV" />
-      <Label layoutX="517.0" layoutY="40.0" text="CASSA">
+      <TextField fx:id="insertType" layoutX="50.0" layoutY="523.0" prefHeight="25.0" prefWidth="460.0" promptText="tipologia (&quot;EXPENSE&quot;, &quot;INCOME&quot;)" />
+      <TextField fx:id="insertAmount" layoutX="50.0" layoutY="559.0" prefHeight="25.0" prefWidth="460.0" promptText="ammontare" />
+      <TextField fx:id="insertDescription" layoutX="50.0" layoutY="601.0" prefHeight="25.0" prefWidth="460.0" promptText="descrizione" />
+      <TextField fx:id="insertDate" layoutX="50.0" layoutY="647.0" prefHeight="25.0" prefWidth="460.0" promptText="data (yyyy-mm-dd)" />
+      <TextField fx:id="updateType" layoutX="590.0" layoutY="523.0" prefHeight="25.0" prefWidth="460.0" promptText="tipologia (&quot;EXPENSE&quot;, &quot;INCOME&quot;)" />
+      <TextField fx:id="updateAmount" layoutX="590.0" layoutY="559.0" prefHeight="25.0" prefWidth="460.0" promptText="ammontare" />
+      <TextField fx:id="updateDescription" layoutX="590.0" layoutY="601.0" prefHeight="25.0" prefWidth="460.0" promptText="descrizione" />
+      <TextField fx:id="updateDate" layoutX="590.0" layoutY="647.0" prefHeight="25.0" prefWidth="460.0" promptText="data (yyyy-mm-dd)" />
+      <TextField fx:id="updateId" layoutX="590.0" layoutY="480.0" prefHeight="25.0" prefWidth="460.0" promptText="id" />
+      <Button alignment="CENTER" layoutX="220.0" layoutY="691.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="120.0" text="inserisci" textAlignment="CENTER" />
+      <Button alignment="CENTER" layoutX="760.0" layoutY="691.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="712.0" layoutY="456.0" text="compila solo i campi che vuoi modificare" textAlignment="CENTER" />
+      <Button alignment="CENTER" layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 5px; -fx-background-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);" text="esporta CSV" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="517.0" layoutY="40.0" text="CASSA" textAlignment="CENTER">
          <font>
-            <Font size="20.0" />
+            <Font name="Colfax" size="20.0" />
          </font>
       </Label>
    </children>

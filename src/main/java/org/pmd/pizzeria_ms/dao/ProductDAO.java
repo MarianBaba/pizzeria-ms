@@ -15,16 +15,16 @@ public class ProductDAO implements DAO<Product> {
 	@Override
 	public List<Product> getAll() {
 		Session session = factory.openSession();
-		Transaction tx = null;
+		Transaction transaction = null;
 		List<Product> products = null;
 		
 		try {
-			tx = session.beginTransaction();
+			transaction = session.beginTransaction();
 			products = session.createQuery("FROM Product").list();
-			tx.commit();
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (transaction != null) {
+				transaction.rollback();
 			}
 			e.printStackTrace();
 		} finally {
@@ -41,36 +41,31 @@ public class ProductDAO implements DAO<Product> {
 	
 	@Override
 	public Integer save(String... params) {
-		String name = params[0];
-		Double price = Double.valueOf(params[1]);
-		Integer quantity = Integer.valueOf(params[2]);
-		
 		Session session = factory.openSession();
-		Transaction tx = null;
+		Transaction transaction = null;
 		Integer id = null;
 		
 		try {
-			tx = session.beginTransaction();
+			transaction = session.beginTransaction();
 			Product product = new Product();
-			product.setName(name);
-			product.setPrice(price);
-			product.setQuantity(quantity);
+			product.setName(params[0]);
+			product.setPrice(Double.valueOf(params[1]));
+			product.setQuantity(Integer.valueOf(params[2]));
 			id = (Integer) session.save(product);
-			tx.commit();
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
+			if (transaction!=null) transaction.rollback();
 	        e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		
 		return id;
 	}
 	
 	@Override
 	public void update(Integer id, Map<String, String> params) {
 		Session session = factory.openSession();
-	    Transaction tx = null;
+	    Transaction transaction = null;
 	    
 	    try {
 	    	Product prod = get(id).get();
@@ -83,28 +78,27 @@ public class ProductDAO implements DAO<Product> {
 	    	if (params.containsKey("quantity")) {
 	    		prod.setQuantity(Integer.valueOf(params.get("quantity")));
 	    	}
-	    	tx = session.beginTransaction();
+	    	transaction = session.beginTransaction();
 	    	session.update(prod);
-	    	tx.commit();
+	    	transaction.commit();
 	    } catch (HibernateException e) {
 	    	e.printStackTrace();
 	    } finally {
 	    	session.close();
 	    }
-	    
 	}
 	
 	@Override
 	public void delete(Integer id) {
 		Session session = factory.openSession();
-	    Transaction tx = null;
+	    Transaction transaction = null;
 	    try {
-	         tx = session.beginTransaction(); 
+	         transaction = session.beginTransaction(); 
 	         Product product = get(id).get();
 	         session.delete(product); 
-	         tx.commit();
+	         transaction.commit();
 	      } catch (HibernateException e) {
-	         if (tx!=null) tx.rollback();
+	         if (transaction!=null) transaction.rollback();
 	         e.printStackTrace(); 
 	      } finally {
 	         session.close(); 

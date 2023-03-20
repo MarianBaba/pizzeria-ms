@@ -15,16 +15,16 @@ public class TransactionDAO implements DAO<Transaction> {
 	@Override
 	public List<Transaction> getAll() {
 		Session session = factory.openSession();
-		org.hibernate.Transaction tx = null;
+		org.hibernate.Transaction transaction = null;
 		List<Transaction> transactions = null;
 		
 		try {
-			tx = session.beginTransaction();
+			transaction = session.beginTransaction();
 			transactions = session.createQuery("FROM Transaction").list();
-			tx.commit();
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (transaction != null) {
+				transaction.rollback();
 			}
 			e.printStackTrace();
 		} finally {
@@ -41,26 +41,21 @@ public class TransactionDAO implements DAO<Transaction> {
 	
 	@Override
 	public Integer save(String... params) {
-		Type type = Type.valueOf(params[0]);
-		Double amount = Double.valueOf(params[1]);
-		String description = params[2];
-		LocalDate date = LocalDate.parse(params[3]);
-		
 		Session session = factory.openSession();
-		org.hibernate.Transaction tx = null;
+		org.hibernate.Transaction transaction = null;
 		Integer id = null;
 		
 		try {
-			tx = session.beginTransaction();
-			Transaction transaction = new Transaction();
-			transaction.setType(type);
-			transaction.setAmount(amount);
-			transaction.setDescription(description);
-			transaction.setDate(date);
-			id = (Integer) session.save(transaction);
-			tx.commit();
+			transaction = session.beginTransaction();
+			Transaction transactionToSave = new Transaction();
+			transactionToSave.setType(Type.valueOf(params[0]));
+			transactionToSave.setAmount(Double.valueOf(params[1]));
+			transactionToSave.setDescription(params[2]);
+			transactionToSave.setDate(LocalDate.parse(params[3]));
+			id = (Integer) session.save(transactionToSave);
+			transaction.commit();
 		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
+			if (transaction!=null) transaction.rollback();
 	        e.printStackTrace();
 		} finally {
 			session.close();
@@ -71,45 +66,44 @@ public class TransactionDAO implements DAO<Transaction> {
 	@Override
 	public void update(Integer id, Map<String, String> params) {
 		Session session = factory.openSession();
-		org.hibernate.Transaction tx = null;
+		org.hibernate.Transaction transaction = null;
 	    
 	    try {
-	    	Transaction transaction = get(id).get();
+	    	Transaction transactionToUpdate = get(id).get();
 	    	if (params.containsKey("type")) {
-	    		transaction.setType(Type.valueOf(params.get("type")));
+	    		transactionToUpdate.setType(Type.valueOf(params.get("type")));
 	    	}
 	    	if (params.containsKey("amount")) {
-	    		transaction.setAmount(Double.valueOf(params.get("amount")));
+	    		transactionToUpdate.setAmount(Double.valueOf(params.get("amount")));
 	    	}
 	    	if (params.containsKey("description")) {
-	    		transaction.setDescription(params.get("description"));
+	    		transactionToUpdate.setDescription(params.get("description"));
 	    	}
 	    	if (params.containsKey("date")) {
-	    		transaction.setDate(LocalDate.parse(params.get("date")));
+	    		transactionToUpdate.setDate(LocalDate.parse(params.get("date")));
 	    	}
 	    	
-	    	tx = session.beginTransaction();
-	    	session.update(transaction);
-	    	tx.commit();
+	    	transaction = session.beginTransaction();
+	    	session.update(transactionToUpdate);
+	    	transaction.commit();
 	    } catch (HibernateException e) {
 	    	e.printStackTrace();
 	    } finally {
 	    	session.close();
 	    }
-	    
 	}
 	
 	@Override
 	public void delete(Integer id) {
 		Session session = factory.openSession();
-		org.hibernate.Transaction tx = null;
+		org.hibernate.Transaction transaction = null;
 	    try {
-	         tx = session.beginTransaction(); 
-	         Transaction transaction = get(id).get();
-	         session.delete(transaction); 
-	         tx.commit();
+	         transaction = session.beginTransaction(); 
+	         Transaction transactionToDelete = get(id).get();
+	         session.delete(transactionToDelete); 
+	         transaction.commit();
 	      } catch (HibernateException e) {
-	         if (tx!=null) tx.rollback();
+	         if (transaction!=null) transaction.rollback();
 	         e.printStackTrace(); 
 	      } finally {
 	         session.close(); 

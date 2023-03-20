@@ -39,95 +39,96 @@ public class CashRegisterController implements Initializable {
 	private TableView<Transaction> transactionsTable;
 	
 	@FXML
-	private TableColumn<Transaction, Integer> idColumn;
+	private TableColumn<Transaction, Integer> id;
 	
 	@FXML
-	private TableColumn<Transaction, Type> typeColumn;
+	private TableColumn<Transaction, Type> type;
 	
 	@FXML
-	private TableColumn<Transaction, Double> amountColumn;
+	private TableColumn<Transaction, Double> amount;
 	
 	@FXML
-	private TableColumn<Transaction, String> descriptionColumn;
+	private TableColumn<Transaction, String> description;
 	
 	@FXML
-	private TableColumn<Transaction, LocalDate> dateColumn;
+	private TableColumn<Transaction, LocalDate> date;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-		amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-		descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
+		type.setCellValueFactory(new PropertyValueFactory<>("type"));
+		amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+		description.setCellValueFactory(new PropertyValueFactory<>("description"));
+		date.setCellValueFactory(new PropertyValueFactory<>("date"));
 		
-		TableColumn<Transaction, Void> deleteButtonColumn = new TableColumn<>("");
-		Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>> deleteButtonCellFactory = new Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>>() {
-            @Override
-            public TableCell<Transaction, Void> call(final TableColumn<Transaction, Void> param) {
-                final TableCell<Transaction, Void> cell = new TableCell<Transaction, Void>() {
+		TableColumn<Transaction, Void> deleteButtonColumn = new TableColumn<>("azioni");
+		Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>> deleteButtonCellFactory = 
+				new Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>>() {
+            		@Override
+            		public TableCell<Transaction, Void> call(final TableColumn<Transaction, Void> param) {
+            			final TableCell<Transaction, Void> cell = new TableCell<Transaction, Void>() {
+            				private final Button btn = new Button("Elimina");
+            				
+            				{
+            					btn.setOnAction((ActionEvent event) -> {
+            						Integer transactionToDelete = getTableView().getItems().get(getIndex()).getId();
+            						transactionDAO.delete(transactionToDelete);
+            						try {
+            							Pizzeria.setRoot("cashRegister");
+            						} catch (IOException e) {
+            							e.printStackTrace();
+            						}
+            					});
+            				}
 
-                    private final Button btn = new Button("Elimina");
-
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                        	
-                        	Integer transactionToDelete = getTableView().getItems().get(getIndex()).getId();
-                        	transactionDAO.delete(transactionToDelete);
-                        	
-                        	try {
-								Pizzeria.setRoot("cashRegister");
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
+            				@Override
+            				public void updateItem(Void item, boolean empty) {
+            					super.updateItem(item, empty);
+            					if (empty) {
+            						setGraphic(null);
+            					} else {
+            						setGraphic(btn);
+            					}
+            				}
+            			};
+            			return cell;
+            		}
+        	};
         
         deleteButtonColumn.setCellFactory(deleteButtonCellFactory);
         
         final Callback<TableColumn<Transaction,String>, TableCell<Transaction, String>> WRAPPING_CELL_FACTORY = 
             new Callback<TableColumn<Transaction,String>, TableCell<Transaction, String>>() {
                     
-            @Override public TableCell<Transaction,String> call(TableColumn<Transaction,String> param) {
-                TableCell<Transaction, String> tableCell = new TableCell<Transaction,String>() {
-                    @Override protected void updateItem(String item, boolean empty) {
-                        if (item == getItem()) return;
-                        super.updateItem(item, empty);
-                        if (item == null) {
-                            super.setText(null);
-                            super.setGraphic(null);
-                        } else {
-                            super.setText(null);
-                            Label l = new Label(item);
-                            l.setWrapText(true);
-                            VBox box = new VBox(l);
-                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
-                            	box.setPrefHeight(newValue.doubleValue()+1);
-                            	Platform.runLater(()->this.getTableRow().requestLayout());
-                            });
-                            super.setGraphic(box);
-                        }
-                    }
-                };
-    	    return tableCell;
-            }
-        };
-        descriptionColumn.setCellFactory(WRAPPING_CELL_FACTORY);
+            	@Override public TableCell<Transaction,String> call(TableColumn<Transaction,String> param) {
+            		TableCell<Transaction, String> tableCell = new TableCell<Transaction,String>() {
+            			
+            			@Override 
+            			protected void updateItem(String item, boolean empty) {
+	            			if (item == getItem()) return;
+	                        	super.updateItem(item, empty);
+	                        if (item == null) {
+	                            super.setText(null);
+	                            super.setGraphic(null);
+	                        } else {
+	                            super.setText(null);
+	                            Label l = new Label(item);
+	                            l.setWrapText(true);
+	                            VBox box = new VBox(l);
+	                            l.heightProperty().addListener((observable,oldValue,newValue)-> {
+	                            	box.setPrefHeight(newValue.doubleValue()+1);
+	                            	Platform.runLater(()->this.getTableRow().requestLayout());
+	                            });
+	                            super.setGraphic(box);
+	                        }
+            			}
+            		};
+            		return tableCell;
+            	}
+        	};
+        	
+        description.setCellFactory(WRAPPING_CELL_FACTORY);
         List<Transaction> transactions = transactionDAO.getAll();
         ObservableList<Transaction> transactionsList = FXCollections.observableArrayList(transactions);
         transactionsTable.getColumns().add(deleteButtonColumn);
@@ -136,64 +137,64 @@ public class CashRegisterController implements Initializable {
         transactionsTable.setMinHeight(Region.USE_PREF_SIZE);
 	}
 	
-	@FXML
-	private TextField insertTypeTextField;
+	// save fields + save function
 	
 	@FXML
-	private TextField insertAmountTextField;
+	private TextField insertType;
 	
 	@FXML
-	private TextField insertDescriptionTextField;
+	private TextField insertAmount;
 	
 	@FXML
-	private TextField insertDateTextField;
+	private TextField insertDescription;
+	
+	@FXML
+	private TextField insertDate;
 	
 	@FXML
 	private void save() throws IOException {
-		String type = insertTypeTextField.getText();
-		String amount = insertAmountTextField.getText();
-		String description = insertDescriptionTextField.getText();
-		String date = insertDateTextField.getText();
-		transactionDAO.save(type, amount, description, date);
+		transactionDAO.save(insertType.getText(), insertAmount.getText(), insertDescription.getText(), insertDate.getText());
 		Pizzeria.setRoot("cashRegister");
 	}
 	
-	@FXML
-	private TextField updateIdTextField;
+	// update fields + update function
 	
 	@FXML
-	private TextField updateTypeTextField;
+	private TextField updateId;
 	
 	@FXML
-	private TextField updateAmountTextField;
+	private TextField updateType;
 	
 	@FXML
-	private TextField updateDescriptionTextField;
+	private TextField updateAmount;
 	
 	@FXML
-	private TextField updateDateTextField;
+	private TextField updateDescription;
+	
+	@FXML
+	private TextField updateDate;
+	
 	
 	@FXML
 	public void update() throws IOException {
 		Map<String, String> updatedTransaction = new HashMap<>();
-		
-		if (updateTypeTextField.getText() != null && !updateTypeTextField.getText().equals("")) {
-			updatedTransaction.put("type", updateTypeTextField.getText());
+		if (updateType.getText() != null && !updateType.getText().equals("")) {
+			updatedTransaction.put("type", updateType.getText());
 		}
 		
-		if (updateAmountTextField.getText() != null && !updateAmountTextField.getText().equals("")) {
-			updatedTransaction.put("amount", updateAmountTextField.getText());
+		if (updateAmount.getText() != null && !updateAmount.getText().equals("")) {
+			updatedTransaction.put("amount", updateAmount.getText());
 		}
 		
-		if (updateDescriptionTextField.getText() != null && !updateDescriptionTextField.getText().equals("")) {
-			updatedTransaction.put("description", updateDescriptionTextField.getText());
+		if (updateDescription.getText() != null && !updateDescription.getText().equals("")) {
+			updatedTransaction.put("description", updateDescription.getText());
 		}
 		
-		if (updateDateTextField.getText() != null && !updateDateTextField.getText().equals("")) {
-			updatedTransaction.put("date", updateDateTextField.getText());
+		if (updateDate.getText() != null && !updateDate.getText().equals("")) {
+			updatedTransaction.put("date", updateDate.getText());
 		}
 		
-		transactionDAO.update(Integer.valueOf(updateIdTextField.getText()), updatedTransaction);
+		transactionDAO.update(Integer.valueOf(updateId.getText()), updatedTransaction);
 		Pizzeria.setRoot("cashRegister");
 	}
 	

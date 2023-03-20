@@ -11,40 +11,40 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pmd.pizzeria_ms.controller.WarehouseController">
    <children>
-      <Button layoutX="50.0" layoutY="40.0" mnemonicParsing="false" onAction="#switchToPizzeria" prefHeight="30.0" prefWidth="100.0" text="indietro" />
+      <Button alignment="CENTER" layoutX="50.0" layoutY="40.0" mnemonicParsing="false" onAction="#switchToPizzeria" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);" text="indietro" textAlignment="CENTER" />
       <TableView fx:id="productsTable" layoutX="50.0" layoutY="120.0" prefHeight="250.0" prefWidth="1000.0">
       <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
          <columns>
-            <TableColumn fx:id="idColumn" prefWidth="75.0" text="id" />
-            <TableColumn fx:id="nameColumn" prefWidth="75.0" text="nome" />
-            <TableColumn fx:id="priceColumn" prefWidth="75.0" text="prezzo" />
-            <TableColumn fx:id="quantityColumn" prefWidth="75.0" text="quantità" />
+            <TableColumn fx:id="id" prefWidth="75.0" text="id" />
+            <TableColumn fx:id="name" prefWidth="75.0" text="nome" />
+            <TableColumn fx:id="price" prefWidth="75.0" text="prezzo" />
+            <TableColumn fx:id="quantity" prefWidth="75.0" text="quantità" />
          </columns>
       </TableView>
       <Separator layoutX="50.0" layoutY="400.0" prefHeight="0.0" prefWidth="1000.0" />
       <Separator layoutX="547.0" layoutY="433.0" orientation="VERTICAL" prefHeight="276.0" prefWidth="0.0" />
-      <Label layoutX="213.0" layoutY="436.0" text="INSERISCI PRODOTTO">
+      <Label alignment="CENTER" layoutX="213.0" layoutY="436.0" text="INSERISCI PRODOTTO" textAlignment="CENTER">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="insertNameTextField" layoutX="51.0" layoutY="524.0" prefHeight="25.0" prefWidth="470.0" text="nome" />
-      <TextField fx:id="insertPriceTextField" layoutX="51.0" layoutY="571.0" prefHeight="25.0" prefWidth="470.0" text="prezzo" />
-      <TextField fx:id="insertQuantityTextField" layoutX="51.0" layoutY="616.0" prefHeight="25.0" prefWidth="470.0" text="quantità" />
-      <Button layoutX="226.0" layoutY="680.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="120.0" text="inserisci" />
-      <Label layoutX="739.0" layoutY="424.0" text="MODIFICA PRODOTTO">
+      <TextField fx:id="insertName" layoutX="51.0" layoutY="524.0" prefHeight="25.0" prefWidth="470.0" promptText="nome" />
+      <TextField fx:id="insertPrice" layoutX="51.0" layoutY="571.0" prefHeight="25.0" prefWidth="470.0" promptText="prezzo" />
+      <TextField fx:id="insertQuantity" layoutX="51.0" layoutY="616.0" prefHeight="25.0" prefWidth="470.0" promptText="quantità" />
+      <Button alignment="CENTER" layoutX="226.0" layoutY="680.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="120.0" text="inserisci" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="739.0" layoutY="424.0" text="MODIFICA PRODOTTO" textAlignment="CENTER">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="updateNameTextField" layoutX="580.0" layoutY="524.0" prefHeight="25.0" prefWidth="470.0" text="nome" />
-      <TextField fx:id="updateIdTextField" layoutX="580.0" layoutY="480.0" prefHeight="25.0" prefWidth="470.0" text="id" />
-      <TextField fx:id="updatePriceTextField" layoutX="580.0" layoutY="571.0" prefHeight="25.0" prefWidth="470.0" text="prezzo" />
-      <TextField fx:id="updateQuantityTextField" layoutX="580.0" layoutY="616.0" prefHeight="25.0" prefWidth="470.0" text="quantità" />
-      <Button layoutX="755.0" layoutY="680.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" />
-      <Label layoutX="707.0" layoutY="446.0" text="compila solo i campi che vuoi modificare" />
-      <Button layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" text="esporta CSV" />
-      <Label layoutX="489.0" layoutY="40.0" text="MAGAZZINO">
+      <TextField fx:id="updateName" layoutX="580.0" layoutY="524.0" prefHeight="25.0" prefWidth="470.0" promptText="nome" />
+      <TextField fx:id="updateId" layoutX="580.0" layoutY="480.0" prefHeight="25.0" prefWidth="470.0" promptText="id" />
+      <TextField fx:id="updatePrice" layoutX="580.0" layoutY="571.0" prefHeight="25.0" prefWidth="470.0" promptText="prezzo" />
+      <TextField fx:id="updateQuantity" layoutX="580.0" layoutY="616.0" prefHeight="25.0" prefWidth="470.0" promptText="quantità" />
+      <Button alignment="CENTER" layoutX="755.0" layoutY="680.0" mnemonicParsing="false" onAction="#update" prefHeight="30.0" prefWidth="120.0" text="modifica" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="707.0" layoutY="446.0" text="compila solo i campi che vuoi modificare" textAlignment="CENTER" />
+      <Button alignment="CENTER" layoutX="950.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);" text="esporta CSV" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="489.0" layoutY="40.0" text="MAGAZZINO" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

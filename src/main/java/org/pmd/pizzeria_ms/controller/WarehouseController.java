@@ -27,129 +27,123 @@ import javafx.util.Callback;
 import javafx.fxml.Initializable;
 
 public class WarehouseController implements Initializable {
-	
 	private static ProductDAO productDAO = new ProductDAO();
 	
 	@FXML
 	private TableView<Product> productsTable;
 	
 	@FXML
-	private TableColumn<Product, Integer> idColumn;
+	private TableColumn<Product, Integer> id;
 	
 	@FXML
-	private TableColumn<Product, String> nameColumn;
+	private TableColumn<Product, String> name;
 
 	@FXML
-	private TableColumn<Product, Double> priceColumn;
+	private TableColumn<Product, Double> price;
 
 	@FXML
-	private TableColumn<Product, Integer> quantityColumn;
+	private TableColumn<Product, Integer> quantity;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-		quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
+		name.setCellValueFactory(new PropertyValueFactory<>("name"));
+		price.setCellValueFactory(new PropertyValueFactory<>("price"));
+		quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 		
-		TableColumn<Product, Void> deleteButtonColumn = new TableColumn<>("");
-		Callback<TableColumn<Product, Void>, TableCell<Product, Void>> deleteButtonCellFactory = new Callback<TableColumn<Product, Void>, TableCell<Product, Void>>() {
-            @Override
-            public TableCell<Product, Void> call(final TableColumn<Product, Void> param) {
-                final TableCell<Product, Void> cell = new TableCell<Product, Void>() {
+		TableColumn<Product, Void> deleteButtonColumn = new TableColumn<>("azioni");
+		Callback<TableColumn<Product, Void>, TableCell<Product, Void>> deleteButtonCellFactory = 
+				new Callback<TableColumn<Product, Void>, TableCell<Product, Void>>() {
+            		@Override
+            		public TableCell<Product, Void> call(final TableColumn<Product, Void> param) {
+            			final TableCell<Product, Void> cell = new TableCell<Product, Void>() {
 
-                    private final Button btn = new Button("Elimina");
-
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
+            				private final Button btn = new Button("Elimina");
+            				{
+            					btn.setOnAction((ActionEvent event) -> {
+            						Integer productToDelete = getTableView().getItems().get(getIndex()).getId();
+            						productDAO.delete(productToDelete);
                         	
-                        	Integer productToDelete = getTableView().getItems().get(getIndex()).getId();
-                        	productDAO.delete(productToDelete);
-                        	
-                        	try {
-								Pizzeria.setRoot("warehouse");
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-                        });
-                    }
+            						try {
+            							Pizzeria.setRoot("warehouse");
+            						} catch (IOException e) {
+            							e.printStackTrace();
+            						}
+            					});
+            				}
 
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
+            				@Override
+            				public void updateItem(Void item, boolean empty) {
+            					super.updateItem(item, empty);
+            					if (empty) {
+            						setGraphic(null);
+            					} else {
+            						setGraphic(btn);
+            					}
+            				}
+            			};
+            			return cell;
+            		}
+        	};
         
         deleteButtonColumn.setCellFactory(deleteButtonCellFactory);
+        productsTable.getColumns().add(deleteButtonColumn);
 		
         List<Product> products = productDAO.getAll();
         ObservableList<Product> productsList = FXCollections.observableArrayList(products);
         
-        productsTable.getColumns().add(deleteButtonColumn);
         productsTable.setItems(productsList);
         productsTable.setMinWidth(Region.USE_PREF_SIZE);
         productsTable.setMinHeight(Region.USE_PREF_SIZE);
 	}
 	
-	// inserisci prodotto
+	// insert fields + save function
 	
 	@FXML
-	private TextField insertNameTextField;
+	private TextField insertName;
 	
 	@FXML
-	private TextField insertPriceTextField;
+	private TextField insertPrice;
 	
 	@FXML
-	private TextField insertQuantityTextField;
+	private TextField insertQuantity;
 	
 	@FXML
 	public void save() throws IOException {
-		String name = insertNameTextField.getText();
-		String price = insertPriceTextField.getText();
-		String quantity = insertQuantityTextField.getText();
-		
-		productDAO.save(name, price, quantity);
+		productDAO.save(insertName.getText(), insertPrice.getText(), insertQuantity.getText());
 		Pizzeria.setRoot("warehouse");
 	}
 	
-	// update prodotto
-	@FXML
-	private TextField updateIdTextField;
+	// update fields + update function
 	
 	@FXML
-	private TextField updateNameTextField;
+	private TextField updateId;
 	
 	@FXML
-	private TextField updatePriceTextField;
+	private TextField updateName;
 	
 	@FXML
-	private TextField updateQuantityTextField;
+	private TextField updatePrice;
+	
+	@FXML
+	private TextField updateQuantity;
 	
 	@FXML
 	public void update() throws IOException {
 		Map<String, String> updatedProduct = new HashMap<>();
-		
-		if (updateNameTextField.getText() != null && !updateNameTextField.getText().equals("")) {
-			updatedProduct.put("name", updateNameTextField.getText());
+		if (updateName.getText() != null && !updateName.getText().equals("")) {
+			updatedProduct.put("name", updateName.getText());
 		}
 		
-		if (updatePriceTextField.getText() != null && !updatePriceTextField.getText().equals("")) {
-			updatedProduct.put("price", updatePriceTextField.getText());
+		if (updatePrice.getText() != null && !updatePrice.getText().equals("")) {
+			updatedProduct.put("price", updatePrice.getText());
 		}
 		
-		if (updateQuantityTextField.getText() != null && !updateQuantityTextField.getText().equals("")) {
-			updatedProduct.put("quantity", updateQuantityTextField.getText());
+		if (updateQuantity.getText() != null && !updateQuantity.getText().equals("")) {
+			updatedProduct.put("quantity", updateQuantity.getText());
 		}
 		
-		productDAO.update(Integer.valueOf(updateIdTextField.getText()), updatedProduct);
+		productDAO.update(Integer.valueOf(updateId.getText()), updatedProduct);
 		Pizzeria.setRoot("warehouse");
 	}
 	
